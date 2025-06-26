@@ -79,7 +79,6 @@ async function getProductDetails(partNumber, accessToken, clientId, useSandbox =
 
 function parsePackageCase(productDetails) {
     let parameterArray = productDetails?.Product.Parameters
-    console.log(parameterArray)
     let packageObj = parameterArray.find((obj) => obj.ParameterText === 'Package / Case')
     if (!packageObj) {
       packageObj = parameterArray.find((obj) => obj.ParameterText == 'Mounting Type')
@@ -91,8 +90,8 @@ async function getPackageDetails(partNumber) {
   try {
     const token = await getAccessToken();
     const productDetails = await getProductDetails(partNumber, token.access, process.env.CLIENT_ID, false);
-    const packageInfo = parsePackageCase(productDetails)
-    console.log(partNumber, packageInfo)
+    if (!productDetails) console.log(productDetails)
+    else console.log(parsePackageCase(productDetails))
   } catch (err) {
     console.error(`Error in getting package details for MPN ${partNumber}:`, err);
   }
